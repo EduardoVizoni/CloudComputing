@@ -2,96 +2,69 @@
     Criar um CRUD ( POST, GET, DELETE, PUT ) de USUARIO (id, nome, data_criacao)
     Criar um CRUD de IMAGEM ( id, referencia, data_criacao, titulo)
 */
-
+const mysql = require('mysql');
 const express = require('express');
 const app = express();
 const port = 3000;
-const db = require('./Database');
+const connection = mysql.createConnection({ host: "localhost", user: "root", password: "", database: "crud_app" });
+connection.connect();
 
 app.use(express.json());
 
-// POST: Criar um usuário
-app.post('/usuarios/:nome', (req, res) => {
-  const { nome } = req.params;
-  
-  if (!nome) {
-    return res.status(400).json({ mensagem: "Por favor, forneça um nome para o usuário." });
-  }
+// POST: Criar usuário
+app.post("/users", (req, res) => {
+    const { id, nome, data_criacao } = req.body;
 
-  db.query('INSERT INTO users (nome) VALUES (?)', [nome], (err, results) => {
-    if (err) {
-      return res.status(500).json({ mensagem: "Ocorreu um erro ao criar o usuário. Tente novamente mais tarde." });
-    }
-    res.status(201).json({ id: results.insertId, nome, data_criacao: new Date(), mensagem: "Usuário criado com sucesso!" });
-  });
+    const query = "INSERT INTO users (id, nome, data_criacao) VALUES (?, ?, ?)";
+    const values = [id, nome, data_criacao];
+    connection.query(query, values, (error, results) => {
+        if (error) {
+            console.error("Erro ao inserir dados:", error);
+            return res.status(500).send({ error: "Erro ao inserir dados no banco" });
+        }
+        res.send({
+            message: "Usuário inserido com sucesso!", results
+        });
+    });
 });
 
-// GET: Listar todos os usuários
-app.get('/usuarios', (req, res) => {
-  db.query('SELECT * FROM users', (err, results) => {
-    if (err) {
-      return res.status(500).json({ mensagem: "Não foi possível recuperar os usuários. Tente novamente mais tarde." });
-    }
-    if (results.length === 0) {
-      return res.status(200).json({ mensagem: "Ainda não há usuários cadastrados." });
-    }
-    res.status(200).json(results);
-  });
+// GET: Obter todos os usuários
+app.get('/users', (req, res) => {
+    const sql = 'SELECT * FROM users';
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(200).json(results);
+    });
 });
 
-// GET: Obter um usuário específico
-app.get('/usuarios/:id', (req, res) => {
-  const { id } = req.params;
-  
-  db.query('SELECT * FROM users WHERE id = ?', [id], (err, results) => {
-    if (err) {
-      return res.status(500).json({ mensagem: "Erro ao buscar o usuário. Tente novamente mais tarde." });
-    }
-    if (results.length === 0) {
-      return res.status(404).json({ mensagem: `Usuário com ID ${id} não encontrado.` });
-    }
-    res.status(200).json(results[0]);
-  });
+
+// DELETE: Deletar um usuário
+app.delete('/users/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = 'DELETE FROM users WHERE id = ?';
+    connection.query(sql, [id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ error: 'Usuário não encontrado' });
+        res.status(200).json({ message: 'Usuário deletado com sucesso' });
+    });
 });
 
 // PUT: Atualizar um usuário
-app.put('/usuarios/:id', (req, res) => {
-  const { id } = req.params;
-  const { nome } = req.body;
+app.put('/users/:id', (req, res) => {
+    const { id } = req.params;  // ID ainda vem pela URL
+    const { nome } = req.body;  // Nome vem no corpo da requisição
 
-  if (!nome) {
-    return res.status(400).json({ mensagem: "Por favor, forneça um nome para atualizar o usuário." });
-  }
-
-  db.query('UPDATE users SET nome = ? WHERE id = ?', [nome, id], (err, results) => {
-    if (err) {
-      return res.status(500).json({ mensagem: "Erro ao atualizar o usuário. Tente novamente mais tarde." });
-    }
-    if (results.affectedRows === 0) {
-      return res.status(404).json({ mensagem: `Não encontramos o usuário com ID ${id}.` });
-    }
-    res.status(200).json({ id, nome, mensagem: "Usuário atualizado com sucesso!" });
-  });
-});
-
-// DELETE: Excluir um usuário
-app.delete('/usuarios/:id', (req, res) => {
-  const { id } = req.params;
-
-  db.query('DELETE FROM users WHERE id = ?', [id], (err, results) => {
-    if (err) {
-      return res.status(500).json({ mensagem: "Erro ao excluir o usuário. Tente novamente mais tarde." });
-    }
-    if (results.affectedRows === 0) {
-      return res.status(404).json({ mensagem: `Não encontramos o usuário com ID ${id} para excluir.` });
-    }
-    res.status(200).json({ mensagem: `Usuário com ID ${id} excluído com sucesso!` });
-  });
+    const sql = 'UPDATE users SET nome = ? WHERE id = ?';
+    connection.query(sql, [nome, id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ error: 'Usuário não encontrado' });
+        res.status(200).json({ message: 'Usuário atualizado com sucesso', id, nome });
+    });
 });
 
 // CRUD de Imagens
 // POST: Criar uma imagem
-app.post('/imagens', (req, res) => {
+app.post('/images', (req, res) => {
   const { referencia, titulo } = req.body;
 
   if (!referencia || !titulo) {
@@ -107,7 +80,7 @@ app.post('/imagens', (req, res) => {
 });
 
 // GET: Listar todas as imagens
-app.get('/imagens', (req, res) => {
+app.get('/images', (req, res) => {
   db.query('SELECT * FROM images', (err, results) => {
     if (err) {
       return res.status(500).json({ mensagem: "Não foi possível recuperar as imagens. Tente novamente mais tarde." });
@@ -120,7 +93,7 @@ app.get('/imagens', (req, res) => {
 });
 
 // PUT: Atualizar uma imagem
-app.put('/imagens/:id', (req, res) => {
+app.put('/images/:id', (req, res) => {
   const { id } = req.params;
   const { referencia, titulo } = req.body;
 
@@ -140,7 +113,7 @@ app.put('/imagens/:id', (req, res) => {
 });
 
 // DELETE: Excluir uma imagem
-app.delete('/imagens/:id', (req, res) => {
+app.delete('/images/:id', (req, res) => {
   const { id } = req.params;
 
   db.query('DELETE FROM images WHERE id = ?', [id], (err, results) => {
