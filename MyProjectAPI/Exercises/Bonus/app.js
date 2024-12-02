@@ -71,7 +71,7 @@ app.post('/images', (req, res) => {
     return res.status(400).json({ mensagem: "Por favor, forneça uma referência e um título para a imagem." });
   }
 
-  db.query('INSERT INTO images (referencia, titulo) VALUES (?, ?)', [referencia, titulo], (err, results) => {
+  connection.query('INSERT INTO images (referencia, titulo) VALUES (?, ?)', [referencia, titulo], (err, results) => {
     if (err) {
       return res.status(500).json({ mensagem: "Ocorreu um erro ao criar a imagem. Tente novamente mais tarde." });
     }
@@ -81,7 +81,7 @@ app.post('/images', (req, res) => {
 
 // GET: Listar todas as imagens
 app.get('/images', (req, res) => {
-  db.query('SELECT * FROM images', (err, results) => {
+  connection.query('SELECT * FROM images', (err, results) => {
     if (err) {
       return res.status(500).json({ mensagem: "Não foi possível recuperar as imagens. Tente novamente mais tarde." });
     }
@@ -101,7 +101,7 @@ app.put('/images/:id', (req, res) => {
     return res.status(400).json({ mensagem: "Por favor, forneça uma referência e um título para atualizar a imagem." });
   }
 
-  db.query('UPDATE images SET referencia = ?, titulo = ? WHERE id = ?', [referencia, titulo, id], (err, results) => {
+  connection.query('UPDATE images SET referencia = ?, titulo = ? WHERE id = ?', [referencia, titulo, id], (err, results) => {
     if (err) {
       return res.status(500).json({ mensagem: "Erro ao atualizar a imagem. Tente novamente mais tarde." });
     }
@@ -116,7 +116,7 @@ app.put('/images/:id', (req, res) => {
 app.delete('/images/:id', (req, res) => {
   const { id } = req.params;
 
-  db.query('DELETE FROM images WHERE id = ?', [id], (err, results) => {
+  connection.query('DELETE FROM images WHERE id = ?', [id], (err, results) => {
     if (err) {
       return res.status(500).json({ mensagem: "Erro ao excluir a imagem. Tente novamente mais tarde." });
     }
