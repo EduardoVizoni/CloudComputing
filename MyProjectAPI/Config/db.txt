@@ -1,17 +1,18 @@
-CREATE DATABASE APICRUD;
-USE APICRUD;
+CREATE DATABASE mundo;
+USE mundo;
+DROP DATABASE mundo;
 
-CREATE TABLE USUARIO(
+CREATE TABLE user(
 id INT(5) NOT NULL primary KEY,
 nome VARCHAR(45),
 data_criacao date
 );
 
-CREATE TABLE IMAGEM(
+CREATE TABLE image(
 id INT(5) NOT NULL primary KEY,
 referencia VARCHAR(45),
 data_criacao DATE,
 titulo VARCHAR(45)
 );
 
-select * from USUARIO;
+select * from usuarios;
