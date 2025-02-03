@@ -1,0 +1,17 @@
+CREATE DATABASE APICRUD;
+USE APICRUD;
+
+CREATE TABLE USUARIO(
+id INT(5) NOT NULL primary KEY,
+nome VARCHAR(45),
+data_criacao date
+);
+
+CREATE TABLE IMAGEM(
+id INT(5) NOT NULL primary KEY,
+referencia VARCHAR(45),
+data_criacao DATE,
+titulo VARCHAR(45)
+);
+
+select * from USUARIO;
