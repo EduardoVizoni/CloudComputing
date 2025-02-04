@@ -1,12 +1,11 @@
-import express from "express";
-import imageController from "../Controllers/imageController.js";
-
+const express = require("express");
 const router = express.Router();
+const userController = require("../Controllers/userController");
 
-router.get('/image', imageController.getAllImages);
-router.get('/image/:id', imageController.getImageById);
-router.post('/image', imageController.createImage);
-router.put('/image/:id', imageController.updateImage);
-router.delete('/image/:id', imageController.deleteImage);
+router.post("/add_imagem", imageController.create);
+router.delete("/delete_imagem/:id", imageController.deleteImagemById);
+router.put("/update_imagem/:id", imageController.updateById);
+router.get("/get_all_imagens", imageController.getImagem);
+router.get("/imagem/:id", imageController.getById);
 
 module.exports = router;

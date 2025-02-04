@@ -1,12 +1,12 @@
 import express from "express";
-import userController from "../Controllers/userController.js"; // Adicione a extensão .js
+import userController from "../Controllers/userController.js";
 
 const router = express.Router();
 
-router.get('/user', userController.getAllUsers);
-router.get('/user/:id', userController.getUserById);
-router.post('/user', userController.createUser);
-router.put('/user/:id', userController.updateUser);
-router.delete('/user/:id', userController.deleteUser);
+router.post("/add_usuario", userController.create);
+router.delete("/delete_usuario/:id", userController.deleteUserById);
+router.put("/update_usuario/:id", userController.updateById);
+router.get("/get_all_usuarios", userController.getUser);
+router.get("/usuario/:id", userController.getById);
 
 module.exports = router;

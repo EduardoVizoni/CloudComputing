@@ -12,33 +12,33 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // PEGAR TODOS OS IMAGENS CADASTRADOS
-app.get("/imagem", (req, res) => {
-   connection.query("SELECT * FROM imagem", (error, results) => {
+const getImagem = async (req, res) => {
+   connection.query("SELECT * FROM tb_imagens", (error, results) => {
       if (error) throw error;
       res.send(results);
    });
-});
+};
 
 // PEGAR TODOS OS IMAGENS POR ID
-app.get("/imagem/:id", (req, res) => {
+const getById = async (req, res) => {
    const { id } = req.params;
    connection.query(
-      `SELECT * FROM imagem WHERE id = ${id}`,
+      `SELECT * FROM tb_imagens WHERE id = ${id}`,
       (error, results) => {
          if (error) throw error;
          res.send(results);
       }
    );
-});
+};
 
 app.use(express.json());
 
 // POSTA AS INFORMAÇÕES DO IMAGEM
-app.post("/imagem", (req, res) => {
+const create = async (req, res) => {
    const { id, referencia, data_criacao, titulo } = req.body;
 
    const query =
-      "INSERT INTO imagem (id, referencia, data_criacao, titulo) VALUES (?, ?, ?, ?)";
+      "INSERT INTO tb_imagens (id, referencia, data_criacao, titulo) VALUES (?, ?, ?, ?)";
    const values = [id, referencia, data_criacao, titulo];
    connection.query(query, values, (error, results) => {
       if (error) {
@@ -52,13 +52,13 @@ app.post("/imagem", (req, res) => {
          results,
       });
    });
-});
+};
 
 // DELETA O IMAGEM POR ID
-app.delete("/imagem/imgdeletebyid/:id", (req, res) => {
+const deleteImagemById = async (req, res) => {
    const { id } = req.params;
 
-   const checkQuery = "SELECT * FROM imagem WHERE id = ?";
+   const checkQuery = "SELECT * FROM tb_imagens WHERE id = ?";
    connection.query(checkQuery, [id], (error, results) => {
       if (error) {
          console.error("Erro ao verificar usuário:", error);
@@ -72,11 +72,11 @@ app.delete("/imagem/imgdeletebyid/:id", (req, res) => {
       }
 
       const updateQuery =
-         "UPDATE imagem SET referencia = ?, data_criacao = ?, titulo = ? WHERE id = ?";
+         "UPDATE tb_imagens SET referencia = ?, data_criacao = ?, titulo = ? WHERE id = ?";
       const values = [referencia, data_criacao, titulo, id];
 
       connection.query(
-         `DELETE FROM imagem WHERE id = ${id}`,
+         `DELETE FROM tb_imagens WHERE id = ${id}`,
          (error, results) => {
             if (error) {
                console.error("Erro ao deletar dados:", error);
@@ -91,14 +91,14 @@ app.delete("/imagem/imgdeletebyid/:id", (req, res) => {
          }
       );
    });
-});
+};
 
 // ATUALIZA O Imagem POR ID
-app.put("/usuario/atualizarusuario/:id", (req, res) => {
+const updateById = async(req, res) => {
    const { id } = req.params;
    const { referencia, data_criacao, titulo } = req.body;
 
-   const checkQuery = "SELECT * FROM imagem WHERE id = ?";
+   const checkQuery = "SELECT * FROM tb_imagens WHERE id = ?";
    connection.query(checkQuery, [id], (error, results) => {
       if (error) {
          console.error("Erro ao verificar a imagem:", error);
@@ -112,7 +112,7 @@ app.put("/usuario/atualizarusuario/:id", (req, res) => {
       }
 
       const updateQuery =
-         "UPDATE imagem SET referencia = ?, data_criacao = ?, titulo = ? WHERE id = ?";
+         "UPDATE tb_imagens SET referencia = ?, data_criacao = ?, titulo = ? WHERE id = ?";
       const values = [nome, data_criacao, titulo, id];
       connection.query(updateQuery, values, (updateError, updateResults) => {
          if (updateError) {
@@ -128,7 +128,16 @@ app.put("/usuario/atualizarusuario/:id", (req, res) => {
          });
       });
    });
-});
+};
+
+
+module.exports = {
+   getImagem,
+   getById,
+   create,
+   deleteImagemById,
+   updateById
+}
 
 app.listen(PORT, () => {
    console.log(`Porta: ${PORT}`);
