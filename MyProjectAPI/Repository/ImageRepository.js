@@ -2,7 +2,7 @@ const express = require("express");
 const mysql = require("mysql");
 const axios = require("axios");
 const app = express();
-const PORT = 3000;
+const PORT = 3010;
 const connection = mysql.createConnection({
    host: "localhost",
    user: "root",

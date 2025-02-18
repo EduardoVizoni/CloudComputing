@@ -2,15 +2,8 @@ const express = require("express");
 const mysql = require("mysql");
 const axios = require("axios");
 const app = express();
-const PORT = 3000;
-const connection = mysql.createConnection({
-   host: "localhost",
-   user: "root",
-   port: "3306",
-   password: "",
-   database: "mundo",
-});
-connection.connect();
+const PORT = 3010;
+import imageService from "../Service/imageService";
 
 // PEGAR TODOS OS IMAGENS CADASTRADOS
 const getImagem = async (req, res) => {
