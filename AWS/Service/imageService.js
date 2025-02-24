@@ -1,5 +1,6 @@
 // src/services/ImageService.js
-const imageRepository = require('../repositories/ImageRepository');
+
+const imageRepository = require('../Repository/inpm installmageRepository');
 
 class ImageService {
   async getImagesByUserId(userId) {
