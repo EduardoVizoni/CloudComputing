@@ -1,4 +1,4 @@
-class User {
+class userModel {
     constructor(id, name, email, createdAt) {
       this.id = id;
       this.name = name;
@@ -7,4 +7,4 @@ class User {
     }
   }
   
-  module.exports = User;
+  module.exports = userModel;

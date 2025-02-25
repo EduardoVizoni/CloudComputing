@@ -1,6 +1,6 @@
-const imageService = require('../Service/imageService');
+const ImageService = require('../Service/imageService');
 
-class imageController {
+class imageController  {
   async getImagesByUserId(req, res) {
     try {
       const images = await imageService.getImagesByUserId(req.params.userId);
@@ -12,10 +12,14 @@ class imageController {
 
   async createImage(req, res) {
     try {
-      const { userId } = req.body;
-      const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-      const imageId = await imageService.createImage({ userId, imageUrl });
-      res.status(201).json({ id: imageId, message: 'Imagem criada com sucesso' });
+      const { filePath, bucketName, keyName } = req.body;
+      if (!filePath || !bucketName || !keyName) {
+        return res.status(400).json({ error: 'filePath, bucketName e keyName são obrigatórios' });
+      }
+
+      const s3Url = await uploadFile(filePath, bucketName, keyName);
+
+      res.status(200).json({ url: s3Url, message: 'Arquivo enviado com sucesso' });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

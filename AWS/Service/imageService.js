@@ -1,19 +1,24 @@
 // src/services/ImageService.js
 
-const imageRepository = require('../Repository/inpm installmageRepository');
+const ImageRepository = require('../Repository/imageRepository');
 
 class ImageService {
   async getImagesByUserId(userId) {
-    return await imageRepository.findByUserId(userId);
+    return await ImageRepository.findByUserId(userId);
   }
 
-  async createImage(image) {
-    return await imageRepository.create(image);
-  }
+  async createImage({ userId, imageUrl }) {
+    if (!userId || !imageUrl) {
+      throw new Error('userId e imageUrl são obrigatórios');
+    }
 
+    const imageId = await ImageRepository.create({ userId, imageUrl });
+    return imageId;
+
+}
   async deleteImage(id) {
-    await imageRepository.delete(id);
+    await ImageRepository.delete(id);
   }
 }
 
-module.exports = new imageService();
+module.exports = new ImageService();

@@ -1,21 +1,12 @@
-// src/app.js
-const express = require('express');
-const routes = require('./Routes');
-const path = require('path');
 
-const app = express();
+const express = require("express");
+const app = new express();
+const routes = require("./Routes/routes");
 
-// Middleware para ler JSON no corpo das requisições
 app.use(express.json());
+app.use("/", routes);
 
-// Servir arquivos estáticos (imagens)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Rotas
-app.use('/api', routes);
-
-// Inicia o servidor
-const PORT = 3000;
+const PORT = 3010;
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+   console.log("Servidor na porta: ", PORT);
 });
