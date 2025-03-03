@@ -1,18 +1,27 @@
-const repository = require("../Repository/S3Repository");
+const repository = require("../Repository/awsRepository");
 
-const uploadFile = async (req, res) => {
-   const { filePath, bucketName, keyName } = req.body;
-
+const uploadFile = async (filePath, bucketName, keyName) => {
    try {
-     const location = await S3Service.uploadFile(filePath, bucketName, keyName);
-     res.status(200).json({ location });
+      console.log("Chamando uploadFile...");
+      const data = await repository.uploadFile(filePath, bucketName, keyName);
+
+      if (!data || !data.location) {
+         throw new Error("Retorno inválido do upload S3.");
+      }
+
+      console.log("Upload bem-sucedido, salvando no imageService...");
+      // await imagemService.addImagem(filePath, keyName);
+
+      return { success: true, location: data.Location };
    } catch (err) {
-     res.status(500).json({ error: err.message });
+      console.error("Erro ao fazer upload:", err);
+      throw new Error("Erro ao fazer upload: " + err.message);
    }
- };
-const downloadFile = async (downloadPath, bucketName, keyName) => {
+};
+
+const downloadFile = async (filePath, bucketName, keyName) => {
    try {
-      const path = await repository.downloadFile(downloadPath, bucketName, keyName);
+      const path = await repository.downloadFile(filePath, bucketName, keyName);
       return { success: true, path };
    } catch (err) {
       console.error("Erro no download:", err.message);

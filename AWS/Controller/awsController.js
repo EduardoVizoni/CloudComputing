@@ -4,7 +4,7 @@ const uploadFile = async (req, res) => {
       const { filePath, bucketName, keyName } = req.body;
   
       try {
-        const location = await S3Service.uploadFile(filePath, bucketName, keyName);
+        const location = await awsService.uploadFile(filePath, bucketName, keyName);
         res.status(200).json({ location });
       } catch (err) {
         res.status(500).json({ error: err.message });

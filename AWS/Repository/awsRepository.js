@@ -1,7 +1,7 @@
 const s3 = require("../Config/S3Client.js");
 const fs = require("fs");
 
-class s3Repository {
+class awsRepository {
 
     static uploadFile = (filePath, bucketName, keyName) => {
       return new Promise((resolve, reject) => {
@@ -39,6 +39,4 @@ class s3Repository {
    };
 }
 
-module.exports = s3Repository;  
-
-module.exports = s3Repository;  
+module.exports = awsRepository; 

@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 // const userController = require("../Controller/userController");
 // const imageController = require("../Controller/imageController");
-const awsController = require("../Controller/awsController");
 
 // router.post("/add_user", userController.addUser);
 // router.get("/get_user/:name", userController.getUser);
@@ -15,9 +14,9 @@ const awsController = require("../Controller/awsController");
 // router.get("/get_all_images", imageController.getAllImages);
 // router.delete("/delete_image/:title", imageController.deleteImage);
 // router.put("update_image/:title", imageController.updateImage);
-const S3Controller = require("../Controller/awsController");
+const awsController = require("../Controller/awsController");
 
-router.post('/upload', S3Controller.uploadFile);
-router.post("/download", S3Controller.downloadFile);
+router.post('/upload', awsController.uploadFile);
+router.post("/download", awsController.downloadFile);
 
 module.exports = router;
