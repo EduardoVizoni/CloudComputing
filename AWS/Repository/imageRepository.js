@@ -31,7 +31,7 @@ class imageRepository  {
 
   async create({ userId, imageUrl }) {
     try {
-      const bucketName = 'nome-do-seu-bucket'; // Nome do seu bucket no S3
+      const bucketName = ''; // Nome do seu bucket no S3
       const keyName = `images/${Date.now()}-${userId}.jpg`; // Nome único para a imagem
 
       // Faz o upload da imagem para o S3

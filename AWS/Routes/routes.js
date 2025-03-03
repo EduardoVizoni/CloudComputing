@@ -17,6 +17,6 @@ const router = express.Router();
 const awsController = require("../Controller/awsController");
 
 router.post('/upload', awsController.uploadFile);
-router.post("/download", awsController.downloadFile);
+router.get("/download", awsController.downloadFile);
 
 module.exports = router;

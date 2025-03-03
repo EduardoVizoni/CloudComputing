@@ -5,12 +5,11 @@ const uploadFile = async (filePath, bucketName, keyName) => {
       console.log("Chamando uploadFile...");
       const data = await repository.uploadFile(filePath, bucketName, keyName);
 
-      if (!data || !data.location) {
+      if (!data || !data.location) { //Verificação para rodar o upload, ver se ele está vazio etc
          throw new Error("Retorno inválido do upload S3.");
       }
 
       console.log("Upload bem-sucedido, salvando no imageService...");
-      // await imagemService.addImagem(filePath, keyName);
 
       return { success: true, location: data.Location };
    } catch (err) {

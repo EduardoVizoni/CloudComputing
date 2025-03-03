@@ -1,4 +1,4 @@
-const ImageService = require('../Service/imageService');
+const imageService = require('../Service/imageService');
 
 class imageController  {
   async getImagesByUserId(req, res) {
