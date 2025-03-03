@@ -40,3 +40,5 @@ class s3Repository {
 }
 
 module.exports = s3Repository;  
+
+module.exports = s3Repository;  
