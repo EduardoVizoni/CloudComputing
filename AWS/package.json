@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.758.0",
+    "@aws-sdk/credential-provider-env": "^3.758.0",
+    "@aws-sdk/s3-request-presigner": "^3.758.0",
     "aws-sdk": "^2.1692.0",
     "express": "^4.21.2"
   },
