@@ -14,36 +14,35 @@ const uploadFile = async (req, res) => {
 };
 
 const downloadFile = async (req, res) => {
-   const { keyName } = req.query;
+  const { keyName } = req.query;
 
-   if (!keyName) {
-      return res.status(400).json({
-         success: false,
-         message: "Parâmetro 'keyName' é obrigatório na URL"
-      });
-   }
+  if (!keyName) {
+    return res.status(400).json({
+      success: false,
+      message: "Parâmetro 'keyName' é obrigatório na URL",
+    });
+  }
 
-   const bucketName = "bucketmi75"
-   const downloadPath = `C:/Users/eduardo_vizoni-prado/Downloads/${keyName}`;
+  const bucketName = "bucketmi75";
+  const downloadPath = `C:/Users/eduardo_vizoni-prado/Downloads/${keyName}`;
 
-   try {
-      const result = await awsService.downloadFile(
+  try {
+    const result = await awsService.downloadFile(
+      bucketName,
+      keyName,
+      downloadPath
+    );
 
-         bucketName,
-         keyName,
-         downloadPath
-      );
-
-      res.status(200).json({
-         success: true,
-         path: result
-      });
-   } catch (err) {
-      res.status(500).json({
-         success: false,
-         message: "Erro no download: " + err.message
-      });
-   }
+    res.status(200).json({
+      success: true,
+      path: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Erro no download: " + err.message,
+    });
+  }
 };
 
 module.exports = {
