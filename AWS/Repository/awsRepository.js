@@ -60,4 +60,8 @@ class awsRepository {
   };
 }
 
+<<<<<<< HEAD
 module.exports = awsRepository;
+=======
+module.exports = awsRepository; 
+>>>>>>> main
