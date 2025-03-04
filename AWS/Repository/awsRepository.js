@@ -59,3 +59,4 @@ class awsRepository {
 }
 
 module.exports = awsRepository; 
+module.exports = awsRepository; 
