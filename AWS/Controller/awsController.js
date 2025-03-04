@@ -28,6 +28,7 @@ const downloadFile = async (req, res) => {
 
    try {
       const result = await awsService.downloadFile(
+
          bucketName,
          keyName,
          downloadPath

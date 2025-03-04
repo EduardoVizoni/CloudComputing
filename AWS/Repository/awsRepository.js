@@ -4,14 +4,12 @@ const path = require("path");
 const AWS = require("aws-sdk");
 const s3AWS = new AWS.S3();
 
-
 class awsRepository {
   static uploadFile = async (filePath, bucketName, keyName) => {
     try {
       if (!filePath) {
         throw new Error("Caminho do arquivo não pode ser undefined.");
       }
-
       console.log("Iniciando upload do arquivo:", filePath);
 
       const fileContent = fs.readFileSync(filePath);
@@ -59,9 +57,4 @@ class awsRepository {
     }
   };
 }
-
-<<<<<<< HEAD
 module.exports = awsRepository;
-=======
-module.exports = awsRepository; 
->>>>>>> main
